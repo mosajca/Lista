@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Lista</string>
+    <string name="description">Zapis do pliku elementów z aplikacji Lista.</string>
+    <string name="save">zapisz</string>
+    <string name="help">pomoc</string>
+    <string name="newName">nowa nazwa</string>
+    <string name="info">Informacje z czujnika grawitacji:</string>
+    <string name="zero">0 0 0</string>
+    <string name="add">dodaj</string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
+    <string name="name">nazwa</string>
+    <string name="amount">ilość</string>
+    <string name="download">pobierz</string>
+    <string name="help2">Aplikacja Lista.\nDodaj: dodawanie elementu.\nKrótkie dotknięcie elementu: nadawanie nowej nazwy.\nDługie dotknięcie elementu: usuwanie.\nZapisz: zapis danych do pliku do katalogu Lista_dane.\nPrzyciski przy elementach: + zwiększenie ilości, - zmniejszenie ilości.\nPrzechylenie telefonu do przodu i z powrotem: usuwanie wszystkich elementów.\nJeśli chcesz pobrać przykładowe dane do testów naciśnij przycisk pobierz. Uwaga, jeśli wprowadziłeś już jakieś dane zostaną one usunięte.</string>
+    <string name="logo">logo</string>
+</resources>
