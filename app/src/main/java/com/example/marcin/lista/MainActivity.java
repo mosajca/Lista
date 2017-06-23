@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private Button addButton;
 
     private boolean disable;
+    private boolean canCommit;
     private float prevValue;
     private long prevTime;
 
@@ -76,20 +77,24 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Bundle bundle = new Bundle();
-                bundle.putInt("i", i);
-                delete.setArguments(bundle);
-                delete.show(getSupportFragmentManager(), "Delete");
+                if (!delete.isAdded()) {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("i", i);
+                    delete.setArguments(bundle);
+                    delete.show(getSupportFragmentManager(), "Delete");
+                }
                 return true;
             }
         });
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Bundle bundle = new Bundle();
-                bundle.putInt("i", i);
-                modify.setArguments(bundle);
-                modify.show(getSupportFragmentManager(), "Modify");
+                if (!modify.isAdded()) {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("i", i);
+                    modify.setArguments(bundle);
+                    modify.show(getSupportFragmentManager(), "Modify");
+                }
             }
         });
 
@@ -98,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         accelerometer = manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
         disable = false;
+        canCommit = false;
         prevValue = 5;
         prevTime = 0;
     }
@@ -116,8 +122,22 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         manager.unregisterListener(this);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        canCommit = false;
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        canCommit = true;
+    }
+
     public void showInput(View v) {
-        input.show(getSupportFragmentManager(), "Input");
+        if (!input.isAdded()) {
+            input.show(getSupportFragmentManager(), "Input");
+        }
     }
 
     public void saveToFile() {
@@ -275,7 +295,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     String[] tags = {"Input", "Delete", "Modify", "DeleteAll"};
                     for (int i = 0; i < 4; ++i) {
                         if ((fragment = getSupportFragmentManager().findFragmentByTag(tags[i])) != null) {
-                            ((DialogFragment) fragment).dismiss();
+                            if (canCommit) {
+                                ((DialogFragment) fragment).dismiss();
+                            } else {
+                                --i;
+                            }
                         }
                     }
                 } else {
@@ -299,7 +323,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                                 getSupportFragmentManager().findFragmentByTag("Delete") == null &&
                                 getSupportFragmentManager().findFragmentByTag("Modify") == null &&
                                 getSupportFragmentManager().findFragmentByTag("DeleteAll") == null) {
-                            deleteAll.show(getSupportFragmentManager(), "DeleteAll");
+                            if (canCommit) {
+                                deleteAll.show(getSupportFragmentManager(), "DeleteAll");
+                            } else {
+                                prevTime = System.currentTimeMillis();
+                            }
                         }
                     }
                     prevValue = value;
