@@ -14,7 +14,8 @@
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/linearLayout"
         android:layout_toStartOf="@+id/linearLayout"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textColor="#FFFFFF" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -39,7 +40,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:minHeight="10dp"
-            android:minWidth="70dp" />
+            android:minWidth="70dp"
+            android:textColor="#FFFFFF" />
 
         <Button
             android:id="@+id/minus"
